@@ -51,14 +51,11 @@ class Hand:
         self.value = self.value + values[card.rank]
         if card.rank == 'Ace':
             self.aces += 1
-            self.adjust_for_ace()
 
     def adjust_for_ace(self):
-        for i in range(0, self.aces):
-            if self.value > 21:
-                self.value -= 10
-            elif (self.value + 10) < 21:
-                self.value += 10
+        while self.value > 21 and self.aces:
+            self.value -= 10
+            self.aces -= 1
 
 
 class Chips:
@@ -101,6 +98,7 @@ class Player:
 def hit(deck, hand):
     card = deck.deal()
     hand.add_card(card)
+    hand.adjust_for_ace()
 
 
 def hit_or_stand(deck, hand):
